@@ -24,5 +24,11 @@ namespace Capstone.DAL
         /// <param name="reservationID">The ID of the reservation to get</param>
         /// <returns>The reservation with the specified ID</returns>
         Reservation GetReservationByID(int reservationID);
+        /// <summary>
+        /// A method for creating a new reservation
+        /// </summary>
+        /// <param name="newReservation">The reservation to be added</param>
+        /// <returns>The reservation ID</returns>
+        int CreateReservation(Reservation newReservation);
     }
 }
