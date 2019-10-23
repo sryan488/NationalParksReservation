@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Capstone.Models
+{
+    public class Reservation
+    {
+        public int ReservationID { get; set; }
+        public int SiteID { get; set; }
+        public string Name { get; set; }
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+        public DateTime CreateDate { get; set; }
+        public Reservation() { }
+        public Reservation(int reservationID, int siteID, string name, DateTime fromDate, DateTime toDate, DateTime createDate)
+        {
+            ReservationID = reservationID;
+            SiteID = siteID;
+            Name = name;
+            FromDate = fromDate;
+            ToDate = toDate;
+            CreateDate = createDate;
+        }
+        //TODO Maybe make a ToString() for all of these model classes?
+    }
+}
