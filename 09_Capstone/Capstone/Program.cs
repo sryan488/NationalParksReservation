@@ -18,6 +18,7 @@ namespace Capstone
 
             string connectionString = configuration.GetConnectionString("Project");
             CLIMenu menu = new CLIMenu(connectionString);
+            menu.Run();
         }
     }
 }

@@ -30,6 +30,14 @@ namespace Capstone.DAL
         /// <param name="siteID">The ID of the campsite to get</param>
         /// <returns>The campsite with the specified ID or null if the ID is invalid</returns>
         Site GetSiteByID(int siteID);
+        /// <summary>
+        /// A method for getting a list of sites that are available between the dates at the campground given
+        /// </summary>
+        /// <param name="arrivalDate">date to arrive</param>
+        /// <param name="departureDate">date to depart</param>
+        /// <param name="campground">campground to check</param>
+        /// <returns>A list of the available sites in the given time frame</returns>
+        IList<Site> GetAvailableSites(DateTime arrivalDate, DateTime departureDate, Campground campground);
         //TODO figure out if we want any other methods in our interface
     }
 }

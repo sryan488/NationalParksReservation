@@ -77,6 +77,31 @@ namespace Capstone.DAL
             return sites;
         }
 
+        public IList<Site> GetAvailableSites(DateTime arrivalDate, DateTime departureDate, Campground campground)
+        {
+            //TODO implement this //IDK if this will work at all but i hope it does :)
+            List<Site> sites = new List<Site>();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                //get all sites in the specified campsite and then remove any sites that have conflicting dates
+                SqlCommand cmd = new SqlCommand(@"SELECT  DISTINCT site.* FROM site WHERE site.campground_id = @cid AND site.site_id NOT IN (SELECT site_id FROM reservation WHERE (to_date > @fromdate AND from_date < @todate)) ", conn);
+                cmd.Parameters.AddWithValue("@cid", campground.CampgroundID);
+                cmd.Parameters.AddWithValue("@todate", departureDate);
+                cmd.Parameters.AddWithValue("@fromdate", arrivalDate);
+
+                SqlDataReader r = cmd.ExecuteReader();
+
+                while (r.Read())
+                {
+                    sites.Add(RowToSite(r));
+                }
+            }
+
+            return sites;
+        }
+
         public Site GetSiteByID(int siteID)
         {
 
@@ -107,7 +132,7 @@ namespace Capstone.DAL
             bool handicapAccessible = Convert.ToBoolean(r["accessible"]);
             int maxRVLength = Convert.ToInt32(r["max_rv_length"]);
             bool hasUtilities = Convert.ToBoolean(r["utilities"]);
-            s = new Site(siteID, campgroundID, siteNumber, maxOccupancy, handicapAccessible, maxOccupancy, hasUtilities);
+            s = new Site(siteID, campgroundID, siteNumber, maxOccupancy, handicapAccessible, maxRVLength, hasUtilities);
 
             return s;
         }

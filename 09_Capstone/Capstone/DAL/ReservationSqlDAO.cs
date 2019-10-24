@@ -34,7 +34,7 @@ namespace Capstone.DAL
             }
             catch (Exception ex)
             {
-                //Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.Message);
                 return -1;
             }
         }
