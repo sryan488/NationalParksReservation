@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
+using Capstone.Menu;
 
 namespace Capstone
 {
@@ -16,6 +17,7 @@ namespace Capstone
             IConfigurationRoot configuration = builder.Build();
 
             string connectionString = configuration.GetConnectionString("Project");
+            CLIMenu menu = new CLIMenu(connectionString);
         }
     }
 }

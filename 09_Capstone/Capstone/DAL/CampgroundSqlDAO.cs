@@ -44,7 +44,7 @@ namespace Capstone.DAL
             {
                 conn.Open();
 
-                SqlCommand cmd = new SqlCommand("SELECT * FROM campground WHERE park_id = @pid name ASC", conn);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM campground WHERE park_id = @pid ORDER BY name ASC", conn);
                 cmd.Parameters.AddWithValue("@pid", park.ParkID);
 
                 SqlDataReader r = cmd.ExecuteReader();
@@ -66,7 +66,7 @@ namespace Capstone.DAL
             {
                 conn.Open();
 
-                SqlCommand cmd = new SqlCommand("SELECT * FROM campground WHERE open_from_mm <= @date AND open_to_mm >= @date name ASC", conn);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM campground WHERE open_from_mm <= @date AND open_to_mm >= @date ORDER BY name ASC", conn);
                 cmd.Parameters.AddWithValue("@date", time);
 
                 SqlDataReader r = cmd.ExecuteReader();
@@ -106,8 +106,8 @@ namespace Capstone.DAL
             int campgroundID = Convert.ToInt32(r["campground_id"]);
             int parkID = Convert.ToInt32(r["park_id"]);
             string name = Convert.ToString(r["name"]);
-            int openFrom = Convert.ToInt32(r["open_from"]);
-            int openTo = Convert.ToInt32(r["open_to"]);
+            int openFrom = Convert.ToInt32(r["open_from_mm"]);
+            int openTo = Convert.ToInt32(r["open_to_mm"]);
             decimal dailyFee = Convert.ToDecimal(r["daily_fee"]);
             c = new Campground(campgroundID, parkID, name, openFrom, openTo, dailyFee);
 

@@ -63,7 +63,7 @@ namespace Capstone.DAL
             {
                 conn.Open();
 
-                SqlCommand cmd = new SqlCommand("SELECT * FROM campground WHERE campground_id = @cid ORDER BY site_number ASC", conn);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM site WHERE campground_id = @cid ORDER BY site_number ASC", conn);
                 cmd.Parameters.AddWithValue("@cid", campground.CampgroundID);
 
                 SqlDataReader r = cmd.ExecuteReader();
@@ -84,7 +84,7 @@ namespace Capstone.DAL
             {
                 conn.Open();
 
-                SqlCommand cmd = new SqlCommand("SELECT * FROM campground WHERE site_id = @sid", conn);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM site WHERE site_id = @sid", conn);
                 cmd.Parameters.AddWithValue("@sid", siteID);
 
                 SqlDataReader r = cmd.ExecuteReader();
@@ -104,7 +104,7 @@ namespace Capstone.DAL
             int campgroundID = Convert.ToInt32(r["campground_id"]);
             int siteNumber = Convert.ToInt32(r["site_number"]);
             int maxOccupancy = Convert.ToInt32(r["max_occupancy"]);
-            bool handicapAccessible = Convert.ToBoolean(r["accesible"]);
+            bool handicapAccessible = Convert.ToBoolean(r["accessible"]);
             int maxRVLength = Convert.ToInt32(r["max_rv_length"]);
             bool hasUtilities = Convert.ToBoolean(r["utilities"]);
             s = new Site(siteID, campgroundID, siteNumber, maxOccupancy, handicapAccessible, maxOccupancy, hasUtilities);
