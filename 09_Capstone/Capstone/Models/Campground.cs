@@ -9,12 +9,12 @@ namespace Capstone.Models
         public int CampgroundID { get; set; }
         public int ParkID { get; set; }
         public string Name { get; set; }
-        public DateTime OpenFrom { get; set; }
-        public DateTime OpenTo { get; set; }
+        public int OpenFrom { get; set; }
+        public int OpenTo { get; set; }
         public decimal DailyFee { get; set; }
 
         public Campground() { }
-        public Campground(int campgroundID, int parkID, string name, DateTime openFrom, DateTime openTo, decimal dailyFee)
+        public Campground(int campgroundID, int parkID, string name, int openFrom, int openTo, decimal dailyFee)
         {
             CampgroundID = campgroundID;
             ParkID = parkID;

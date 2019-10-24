@@ -23,7 +23,7 @@ namespace Capstone.DAL
         /// </summary>
         /// <param name="time">The time to check if a campground is open at</param>
         /// <returns>A list of all campgrounds open at the specified time</returns>
-        IList<Campground> GetAllOpenCampgrounds(DateTime time);
+        IList<Campground> GetAllOpenCampgrounds(int time);
         /// <summary>
         /// A method for getting the campground with the specific ID
         /// </summary>
