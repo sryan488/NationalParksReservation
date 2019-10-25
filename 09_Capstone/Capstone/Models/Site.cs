@@ -25,6 +25,6 @@ namespace Capstone.Models
             MaxRVLength = maxRVLength;
             HasUtilities = hasUtilities;
         }
-        //TODO Maybe make a ToString() for all of these model classes?
+        //NOPE Maybe make a ToString() for all of these model classes?
     }
 }

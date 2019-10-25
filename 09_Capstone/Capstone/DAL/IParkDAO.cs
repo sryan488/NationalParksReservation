@@ -18,6 +18,6 @@ namespace Capstone.DAL
         /// <param name="parkID">The ID of the park to get</param>
         /// <returns>The Park with the corresponding ID or null if the ID is invalid</returns>
         Park GetParkByID(int parkID);
-        //TODO figure out what other access methods we want in our interface
+        //DONE figure out what other access methods we want in our interface
     }
 }

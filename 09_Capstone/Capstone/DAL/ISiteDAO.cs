@@ -38,6 +38,6 @@ namespace Capstone.DAL
         /// <param name="campground">campground to check</param>
         /// <returns>A list of the available sites in the given time frame</returns>
         IList<Site> GetAvailableSites(DateTime arrivalDate, DateTime departureDate, Campground campground);
-        //TODO figure out if we want any other methods in our interface
+        //DONE figure out if we want any other methods in our interface
     }
 }

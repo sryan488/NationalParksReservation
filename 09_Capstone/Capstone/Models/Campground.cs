@@ -23,6 +23,6 @@ namespace Capstone.Models
             OpenTo = openTo;
             DailyFee = dailyFee;
         }
-        //TODO Maybe make a ToString() for all of these model classes?
+        //NOPE Maybe make a ToString() for all of these model classes?
     }
 }

@@ -30,6 +30,6 @@ namespace Capstone.DAL
         /// <param name="campgroundID">The ID of the campground</param>
         /// <returns>The Campground with the specified ID</returns>
         Campground GetCampgroundByID(int campgroundID);
-        //TODO figure out what other methods we may want in our interface
+        //DONE figure out what other methods we may want in our interface
     }
 }

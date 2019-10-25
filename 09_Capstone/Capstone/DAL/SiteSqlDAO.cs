@@ -79,7 +79,7 @@ namespace Capstone.DAL
 
         public IList<Site> GetAvailableSites(DateTime arrivalDate, DateTime departureDate, Campground campground)
         {
-            //TODO implement this //IDK if this will work at all but i hope it does :)
+            //DONE implement this // Tested it, it works :)
             List<Site> sites = new List<Site>();
 
             using (SqlConnection conn = new SqlConnection(connectionString))

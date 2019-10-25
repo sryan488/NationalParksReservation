@@ -42,7 +42,7 @@ namespace Capstone.Menu
             {
                 
                 IList<Park> parks = parkDAO.GetAllParks();
-                //TODO make this prettier
+                //DONE make this prettier
                 Console.WriteLine("Select a park for further details:");
                 for (int i = 1; i <= parks.Count; i++)
                 {
@@ -74,7 +74,8 @@ namespace Capstone.Menu
                 Console.WriteLine($"Area:\t\t\t{park.Area:##,#} sq km");
                 Console.WriteLine($"Annual Visitors:\t{park.Visitor:##,#}");
                 Console.WriteLine($"\n{park.Description}");
-                Console.WriteLine($"\nSelect a Command\n\t1) View Campgrounds\n\t2) Search for Reservation\n\t0) Return to Previous Screen");
+                Console.WriteLine($"\nSelect a Command\n\t1) View Campgrounds\n\t2) Search for Reservation (not implemented, will throw exception)\n\t0) Return to Previous Screen");
+                Console.WriteLine();
                 int userSelection = GetValidSelection(2);
                 if (userSelection == 0)
                 {
@@ -102,7 +103,7 @@ namespace Capstone.Menu
             {
                 Console.Clear();
                 Console.WriteLine($"{park.Name} National Park Campgrounds");
-                Console.WriteLine();//TODO make this menu look nice
+                Console.WriteLine();//DONE make this menu look nice
                 IList<Campground> campgrounds = campDAO.GetAllCampgrounds(park);
                 WriteCampgroundsList(campgrounds);
                 Console.WriteLine("\nSelect a Command\n\t1) Search for Available Reservation\n\t0) Return to Previous Screen");
@@ -153,7 +154,7 @@ namespace Capstone.Menu
                 
                
                 sites = siteDAO.GetAvailableSites(userArrival, userDeparture, campground);
-                //TODO figure out how to figure out if their dates occur in the campground's offseason and if so, remove all the sites
+                //DONE figure out how to figure out if their dates occur in the campground's offseason and if so, remove all the sites
                 /*
                  *  If their start month is less than their end month, things are normal so we.......
                  *  If their start year is not the same as their end year, then they're camping over the new year and it's kinda odd how we figure out if they're okay to camp
@@ -206,7 +207,7 @@ namespace Capstone.Menu
             {
                 return;
             }
-            // TODO make sure they enter a valid name for the reservation
+            // DONE make sure they enter a valid name for the reservation
             Console.Write("What name should the reservation be made under? ");
             string userName = GetValidName();
             //DONE do logic to find the site ID
@@ -219,9 +220,15 @@ namespace Capstone.Menu
                 }
             }
             //Console.WriteLine(siteID);
-            int reservationID = reservationDAO.CreateReservation(new Reservation() { SiteID = siteID, Name = userName, FromDate = userArrival, ToDate = userDeparture, CreateDate = DateTime.Now });
-            //TODO write out their reservation info here
-            Console.WriteLine($"The reservation has been made and the confirmation id is {reservationID}");
+            DateTime currentTime = DateTime.Now;
+            int reservationID = reservationDAO.CreateReservation(new Reservation() { SiteID = siteID, Name = userName, FromDate = userArrival, ToDate = userDeparture, CreateDate = currentTime });
+            //DONE write out their reservation info here
+            Console.WriteLine("Final Reservation Info:\n");
+            Console.WriteLine($"\tThe site ID is {siteID}");
+            Console.WriteLine($"\tThe reservation is under {userName}");
+            Console.WriteLine($"\tYou are staying from {userArrival:d} to {userDeparture:d}");
+            Console.WriteLine($"\tThe reservation creation time is {currentTime}");
+            Console.WriteLine($"\tThe reservation has been made and the confirmation ID is {reservationID}");
 
             Console.ReadLine();
             
@@ -278,16 +285,16 @@ namespace Capstone.Menu
         private void WriteCampgroundsList(IList<Campground> campgrounds)
         {
             //DONE add the header list for this
-            Console.WriteLine($"{"",-6}{"Name",-20}{"Open",-12}{"Close",-12}{"Daily Fee",-12}");//TODO make sure this looks fine
+            Console.WriteLine($"{"",-6}{"Name",-34}{"Open",-12}{"Close",-12}{"Daily Fee",-12}");//DONE make sure this looks fine
             for (int i = 0; i < campgrounds.Count; i++)
             {
-                Console.WriteLine($"#{i + 1, -5}{campgrounds[i].Name,-20}{months[campgrounds[i].OpenFrom],-12}{months[campgrounds[i].OpenTo],-12}{campgrounds[i].DailyFee,-12:c}");
+                Console.WriteLine($"#{i + 1, -5}{campgrounds[i].Name,-34}{months[campgrounds[i].OpenFrom],-12}{months[campgrounds[i].OpenTo],-12}{campgrounds[i].DailyFee,-12:c}");
             }
         }
 
         private void WriteSiteList(IList<Site> sites)
         {
-            Console.WriteLine($"{"Site No.",-10}{"Max Occup.",-12}{"Accessible?",-13}{"Max RV Length",-16}{"Utility",-10}");//TODO make sure this looks fine
+            Console.WriteLine($"{"Site No.",-10}{"Max Occup.",-12}{"Accessible?",-13}{"Max RV Length",-16}{"Utility",-10}");//DONE make sure this looks fine
             foreach(Site site in sites)
             {
                 Console.WriteLine($"{site.SiteNumber,-10}{site.MaxOccupancy,-12}{(site.HandicapAccess ? "Yes" : "No" ), -13}{((site.MaxRVLength == 0)? @"N/A" : Convert.ToString(site.MaxRVLength)),-16}{(site.HasUtilities ? "Yes" : "N/A"),-10}");

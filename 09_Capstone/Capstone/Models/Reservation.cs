@@ -22,6 +22,6 @@ namespace Capstone.Models
             ToDate = toDate;
             CreateDate = createDate;
         }
-        //TODO Maybe make a ToString() for all of these model classes?
+        //NOPE Maybe make a ToString() for all of these model classes?
     }
 }
