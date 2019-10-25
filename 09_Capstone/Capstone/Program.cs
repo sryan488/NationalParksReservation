@@ -16,6 +16,7 @@ namespace Capstone
 
             IConfigurationRoot configuration = builder.Build();
 
+            
             string connectionString = configuration.GetConnectionString("Project");
             CLIMenu menu = new CLIMenu(connectionString);
             menu.Run();

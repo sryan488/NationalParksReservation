@@ -156,8 +156,10 @@ namespace Capstone.Menu
                 //TODO figure out how to figure out if their dates occur in the campground's offseason and if so, remove all the sites
                 /*
                  *  If their start month is less than their end month, things are normal so we.......
-                 *  If their start month is GREATER than their end month, then they're camping over the new year and it's kinda odd how we figure out if they're okay to camp
-                 * 
+                 *  If their start year is not the same as their end year, then they're camping over the new year and it's kinda odd how we figure out if they're okay to camp
+                 *      -if the campground is not open in december and january..... then they can't stay there
+                 *      -if their start month is less than their end month, then they're trying to camp for over a full year so the park needs to be open year round if they want that reservation
+                 *      
                  */
                 if (userArrival.Year == userDeparture.Year)
                 {
@@ -170,6 +172,10 @@ namespace Capstone.Menu
                 else
                 {
                     //in this case, they're camping over the new year and things get weiiiiird
+                    if(campground.OpenFrom != 1 && campground.OpenTo != 12)
+                    {
+                        sites.Clear();
+                    }
                 }
                 if (sites.Count == 0)
                 {
@@ -200,8 +206,9 @@ namespace Capstone.Menu
             {
                 return;
             }
+            // TODO make sure they enter a valid name for the reservation
             Console.Write("What name should the reservation be made under? ");
-            string userName = Console.ReadLine();
+            string userName = GetValidName();
             //DONE do logic to find the site ID
             int siteID = -1;
             foreach(Site site in sites)
@@ -213,6 +220,7 @@ namespace Capstone.Menu
             }
             //Console.WriteLine(siteID);
             int reservationID = reservationDAO.CreateReservation(new Reservation() { SiteID = siteID, Name = userName, FromDate = userArrival, ToDate = userDeparture, CreateDate = DateTime.Now });
+            //TODO write out their reservation info here
             Console.WriteLine($"The reservation has been made and the confirmation id is {reservationID}");
 
             Console.ReadLine();
@@ -256,6 +264,16 @@ namespace Capstone.Menu
             }
             
             return selection;
+        }
+        private string GetValidName()
+        {
+            string name = Console.ReadLine().Trim();
+            if(name.Length == 0)
+            {
+                Console.Write("Your name must be at least 1 character long: ");
+                return GetValidName();
+            }
+            return name;
         }
         private void WriteCampgroundsList(IList<Campground> campgrounds)
         {
