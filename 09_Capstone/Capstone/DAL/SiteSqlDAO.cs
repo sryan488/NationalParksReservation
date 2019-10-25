@@ -86,7 +86,7 @@ namespace Capstone.DAL
             {
                 conn.Open();
                 //get all sites in the specified campsite and then remove any sites that have conflicting dates
-                SqlCommand cmd = new SqlCommand(@"SELECT  DISTINCT site.* FROM site WHERE site.campground_id = @cid AND site.site_id NOT IN (SELECT site_id FROM reservation WHERE (to_date > @fromdate AND from_date < @todate)) ", conn);
+                SqlCommand cmd = new SqlCommand(@"SELECT  DISTINCT TOP 5 site.* FROM site WHERE site.campground_id = @cid AND site.site_id NOT IN (SELECT site_id FROM reservation WHERE (to_date > @fromdate AND from_date < @todate)) ORDER BY site_number", conn);
                 cmd.Parameters.AddWithValue("@cid", campground.CampgroundID);
                 cmd.Parameters.AddWithValue("@todate", departureDate);
                 cmd.Parameters.AddWithValue("@fromdate", arrivalDate);

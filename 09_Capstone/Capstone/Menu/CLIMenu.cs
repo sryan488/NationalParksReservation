@@ -40,6 +40,7 @@ namespace Capstone.Menu
         {
             while(true)
             {
+                
                 IList<Park> parks = parkDAO.GetAllParks();
                 //TODO make this prettier
                 Console.WriteLine("Select a park for further details:");
@@ -57,7 +58,8 @@ namespace Capstone.Menu
                 }
                 userSelection--;
                 RunParkInfoMenu(parks[userSelection]);
-                Console.ReadLine();
+                Console.Clear();
+                //Console.ReadLine();
             }
         }
 
@@ -100,10 +102,10 @@ namespace Capstone.Menu
             {
                 Console.Clear();
                 Console.WriteLine($"{park.Name} National Park Campgrounds");
-                Console.WriteLine("\n");//TODO make this menu look nice
+                Console.WriteLine();//TODO make this menu look nice
                 IList<Campground> campgrounds = campDAO.GetAllCampgrounds(park);
                 WriteCampgroundsList(campgrounds);
-                Console.WriteLine("Select a Command\n\t1) Search for Available Reservation\n\t0) Return to Previous Screen");
+                Console.WriteLine("\nSelect a Command\n\t1) Search for Available Reservation\n\t0) Return to Previous Screen");
                 int userSelection = GetValidSelection(1);
                 if(userSelection == 0)
                 {
@@ -118,41 +120,89 @@ namespace Capstone.Menu
 
         private void RunAvailableReservationSearchMenu(IList<Campground> campgrounds)
         {
+            Console.Clear();
             WriteCampgroundsList(campgrounds);
             Console.Write("\nSelect a Campground to make a reservation or 0 to go back: ");
-
+            IList<Site> sites;
+            Campground campground;
+            DateTime userArrival;
+            DateTime userDeparture;
+            int numberOfDaysToStay;
             int userSelection = GetValidSelection(campgrounds.Count);
             if (userSelection == 0)
             {
                 return;
             }
-            Console.Write("What is the arrival date (MM/DD/YYYY)? ");
-            DateTime userArrival = GetValidDate();
-            Console.Write("What is the departure date (MM/DD/YYYY)? ");
-            DateTime userDeparture = GetValidDate();
-            while(userDeparture.CompareTo(userArrival) <= 0)//you have reserve at least one day
-            {
-                Console.Write("No, really.... What is the departure date (MM/DD/YYYY)? ");
-                userDeparture = GetValidDate();
-            }
             userSelection--;
-            //TODO do logic to search for available campsites during their dates
-            //we did the logic in a SQL statement in the SiteDAO
-            Console.Clear();
-            Campground campground = campgrounds[userSelection];
-            int numberOfDaysToStay = ((TimeSpan)(userDeparture - userArrival)).Days;
-            IList<Site> sites = siteDAO.GetAvailableSites(userArrival, userDeparture, campground);
+            campground = campgrounds[userSelection];
+            while (true)
+            {
+                Console.Write("What is the arrival date (MM/DD/YYYY)? ");
+                userArrival = GetValidDate();
+                Console.Write("What is the departure date (MM/DD/YYYY)? ");
+                userDeparture = GetValidDate();
+                while (userDeparture.CompareTo(userArrival) <= 0)//you have reserve at least one day
+                {
+                    Console.Write("No, really.... What is the departure date (MM/DD/YYYY)? ");
+                    userDeparture = GetValidDate();
+                }
+                
+                //DONE do logic to search for available campsites during their dates
+                //we did the logic in a SQL statement in the SiteDAO
+                Console.Clear();
+                
+               
+                sites = siteDAO.GetAvailableSites(userArrival, userDeparture, campground);
+                //TODO figure out how to figure out if their dates occur in the campground's offseason and if so, remove all the sites
+                /*
+                 *  If their start month is less than their end month, things are normal so we.......
+                 *  If their start month is GREATER than their end month, then they're camping over the new year and it's kinda odd how we figure out if they're okay to camp
+                 * 
+                 */
+                if (userArrival.Year == userDeparture.Year)
+                {
+                    if (!(userArrival.Month >= campground.OpenFrom && userArrival.Month <= campground.OpenTo && userDeparture.Month >= campground.OpenFrom && userDeparture.Month <= campground.OpenTo))
+                    {
+                        //in this case, they're NOT safe to keep going
+                        sites.Clear();
+                    }
+                }
+                else
+                {
+                    //in this case, they're camping over the new year and things get weiiiiird
+                }
+                if (sites.Count == 0)
+                {
+                    Console.WriteLine("There were no available campsites for the given time frame. \nWould you like to enter a different set of dates(Y/N)?");
+                    string userYorN = Console.ReadLine().ToLower().Trim();
+                    if(userYorN.StartsWith("y"))
+                    {
+                        continue;//continue with the loop, which is to say, go back and ask for dates again
+                    }
+
+                    Console.WriteLine("Returning to Campground Menu...");
+                    Thread.Sleep(3000);
+                    return;
+                }
+                else
+                {
+                    break;//if we get here, then they gave us dates with available campsites and we're breaking the loop to continue with reserving
+                    //this should happen MOST of the time
+                }
+            }
+            numberOfDaysToStay = ((TimeSpan)(userDeparture - userArrival)).Days;
+            Console.WriteLine("Results Matching Your Search Criteria");
             WriteSiteList(sites);
             Console.WriteLine($"\tThe cost will be {campground.DailyFee * numberOfDaysToStay:c}");
-            Console.Write($"\nWhich site would you like to reserve? ");
+            Console.Write($"\nWhich site would you like to reserve (enter 0 to cancel)? ");
             int userSiteToReserve = GetValidSiteSelection(sites);
             if(userSiteToReserve == 0)
             {
                 return;
             }
-            Console.Write("What name should the reservation be made under?");
+            Console.Write("What name should the reservation be made under? ");
             string userName = Console.ReadLine();
-            //TODO do logic to find the site ID
+            //DONE do logic to find the site ID
             int siteID = -1;
             foreach(Site site in sites)
             {
@@ -201,7 +251,7 @@ namespace Capstone.Menu
                 }
                 else
                 {
-                    Console.Write($"That was not a valid selection. Select a number between 0 and {max}:");
+                    Console.Write($"That was not a valid selection. Select a number between 0 and {max}: ");
                 }
             }
             
@@ -209,18 +259,20 @@ namespace Capstone.Menu
         }
         private void WriteCampgroundsList(IList<Campground> campgrounds)
         {
-            //TODO add the header list for this
+            //DONE add the header list for this
+            Console.WriteLine($"{"",-6}{"Name",-20}{"Open",-12}{"Close",-12}{"Daily Fee",-12}");//TODO make sure this looks fine
             for (int i = 0; i < campgrounds.Count; i++)
             {
-                Console.WriteLine($"#{i + 1} {campgrounds[i].Name} {months[campgrounds[i].OpenFrom]} {months[campgrounds[i].OpenTo]} {campgrounds[i].DailyFee:c}");
+                Console.WriteLine($"#{i + 1, -5}{campgrounds[i].Name,-20}{months[campgrounds[i].OpenFrom],-12}{months[campgrounds[i].OpenTo],-12}{campgrounds[i].DailyFee,-12:c}");
             }
         }
 
         private void WriteSiteList(IList<Site> sites)
         {
+            Console.WriteLine($"{"Site No.",-10}{"Max Occup.",-12}{"Accessible?",-13}{"Max RV Length",-16}{"Utility",-10}");//TODO make sure this looks fine
             foreach(Site site in sites)
             {
-                Console.WriteLine($"{site.SiteNumber,-10} {site.MaxOccupancy,-10} {(site.HandicapAccess ? "Yes" : "No" ), -10} {site.MaxRVLength,-10} {(site.HasUtilities ? "Yes" : "N/A"),-10}");
+                Console.WriteLine($"{site.SiteNumber,-10}{site.MaxOccupancy,-12}{(site.HandicapAccess ? "Yes" : "No" ), -13}{((site.MaxRVLength == 0)? @"N/A" : Convert.ToString(site.MaxRVLength)),-16}{(site.HasUtilities ? "Yes" : "N/A"),-10}");
             }
         }
 
@@ -228,7 +280,7 @@ namespace Capstone.Menu
         {
             while(true)
             {
-                if(DateTime.TryParse(Console.ReadLine(), out DateTime userTime))
+                if(DateTime.TryParse(Console.ReadLine(), out DateTime userTime) && userTime.Date.CompareTo(DateTime.Now.Date) >= 0)
                 {
                     return userTime.Date;
                 }
