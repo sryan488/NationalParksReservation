@@ -74,9 +74,11 @@ namespace Capstone.Menu
                 Console.WriteLine($"Area:\t\t\t{park.Area:##,#} sq km");
                 Console.WriteLine($"Annual Visitors:\t{park.Visitor:##,#}");
                 Console.WriteLine($"\n{park.Description}");
-                Console.WriteLine($"\nSelect a Command\n\t1) View Campgrounds\n\t2) Search for Reservation (not implemented, will throw exception)\n\t0) Return to Previous Screen");
+                Console.WriteLine("\nSelect a Command\n\t1) View Campgrounds");
+                //Console.WriteLine("\t2) Search for Reservation (not implemented, will throw exception)");
+                Console.WriteLine("\t0) Return to Previous Screen");
                 Console.WriteLine();
-                int userSelection = GetValidSelection(2);
+                int userSelection = GetValidSelection(1);
                 if (userSelection == 0)
                 {
                     return;
@@ -85,7 +87,7 @@ namespace Capstone.Menu
                 {
                     RunCampgroundMenu(park);
                 }
-                if (userSelection == 2)
+                if (userSelection == 2)//it won't be
                 {
                     RunReservationSearchMenu(park);
                 }
@@ -94,7 +96,7 @@ namespace Capstone.Menu
 
         private void RunReservationSearchMenu(Park park)
         {
-            throw new NotImplementedException();//TODO implement this if we have time
+            throw new NotImplementedException();
         }
 
         private void RunCampgroundMenu(Park park)
