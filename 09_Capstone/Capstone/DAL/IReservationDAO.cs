@@ -5,6 +5,8 @@ using Capstone.Models;
 
 namespace Capstone.DAL
 {
+    // these are the interfaces that serve as a middle man to communicate with the sql database
+    // Database Access Layers
     public interface IReservationDAO
     {
         /// <summary>

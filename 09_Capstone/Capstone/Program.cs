@@ -7,6 +7,7 @@ namespace Capstone
 {
     class Program
     {
+        // this is the main method that start the whole thing
         static void Main(string[] args)
         {
             // Get the connection string from the appsettings.json file
@@ -16,7 +17,7 @@ namespace Capstone
 
             IConfigurationRoot configuration = builder.Build();
 
-            
+            // this runs the menu
             string connectionString = configuration.GetConnectionString("Project");
             CLIMenu menu = new CLIMenu(connectionString);
             menu.Run();

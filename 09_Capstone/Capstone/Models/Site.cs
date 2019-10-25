@@ -4,8 +4,10 @@ using System.Text;
 
 namespace Capstone.Models
 {
+    // these are the C# "models" that represent the tables in the sql database
     public class Site
     {
+        // these are the properties of the site table
         public int SiteID { get; set; }
         public int CampgroundID { get; set; }
         public int SiteNumber { get; set; }
@@ -14,6 +16,7 @@ namespace Capstone.Models
         public int MaxRVLength { get; set; }
         public bool HasUtilities { get; set; }
 
+        // double constructor so no need for tostring override?
         public Site() { }
         public Site(int siteID, int campgroundID, int siteNumber, int maxOccupancy, bool handicapAccess, int maxRVLength, bool hasUtilities)
         {

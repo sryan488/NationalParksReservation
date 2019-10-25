@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Capstone.Models
 {
+    // these are the C# "models" that represent the tables in the sql database
     public class Park
     {
         public int ParkID { get; set; }
