@@ -280,7 +280,7 @@ namespace Capstone.Menu
             if(name.Length == 0)
             {
                 Console.Write("Your name must be at least 1 character long: ");
-                return GetValidName();
+                return GetValidName();//I wanted to call this one recursively for no reason in particular
             }
             return name;
         }
